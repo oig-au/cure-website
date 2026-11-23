@@ -110,9 +110,122 @@ footer p{margin:0;max-width:60ch}
   .banner{height:110px}
   section{padding:52px 0}
 }
+
+/* ===== MOTION & DEPTH ===== */
+:root{--ease:cubic-bezier(.2,.7,.2,1)}
+section,[id]{scroll-margin-top:70px}
+
+/* progress bar */
+#bar{position:fixed;top:0;left:0;height:4px;width:0;background:linear-gradient(90deg,#7c3aed,#d8b4fe);z-index:50;transition:width .1s linear}
+
+/* banner slow drift */
+.banner{background-size:112%;animation:drift 22s ease-in-out infinite alternate}
+@keyframes drift{from{background-position:30% 50%}to{background-position:70% 50%}}
+
+/* nav */
+nav{transition:box-shadow .3s,background .3s}
+nav.scrolled{box-shadow:0 6px 24px rgba(27,15,51,.35)}
+nav a{position:relative;padding:4px 0;transition:opacity .2s}
+nav a::after{content:"";position:absolute;left:0;bottom:-2px;height:2px;width:100%;background:#d8b4fe;transform:scaleX(0);transform-origin:left;transition:transform .3s var(--ease)}
+nav a:hover::after,nav a.active::after{transform:scaleX(1)}
+nav a.active{opacity:1}
+nav a:hover{text-decoration:none}
+
+/* dark animated hero */
+.hero{position:relative;overflow:hidden;background:#1d0b3a;color:#e6dafa;padding:88px 0 96px}
+.hero::before,.hero::after{content:"";position:absolute;border-radius:50%;filter:blur(70px);opacity:.55;pointer-events:none}
+.hero::before{width:520px;height:520px;background:#7c3aed;top:-160px;right:-80px;animation:blob1 14s ease-in-out infinite alternate}
+.hero::after{width:440px;height:440px;background:#4f2a96;bottom:-180px;left:-100px;animation:blob2 17s ease-in-out infinite alternate}
+@keyframes blob1{to{transform:translate(-120px,90px) scale(1.2)}}
+@keyframes blob2{to{transform:translate(140px,-70px) scale(1.15)}}
+.hero .wrap{position:relative;z-index:1}
+.hero h1{color:#fff;display:flex}
+.hero h1 span{display:inline-block;opacity:0;transform:translateY(60px) rotate(4deg);animation:rise .9s var(--ease) forwards}
+.hero h1 span:nth-child(1){animation-delay:.1s}.hero h1 span:nth-child(2){animation-delay:.22s}
+.hero h1 span:nth-child(3){animation-delay:.34s}.hero h1 span:nth-child(4){animation-delay:.46s}
+@keyframes rise{to{opacity:1;transform:none}}
+.hero h2{color:#fff}
+.hero .tag{color:#d8b4fe}
+.hero h2,.hero .tag,.hero p,.hero .btns{opacity:0;transform:translateY(18px);animation:rise .8s var(--ease) forwards}
+.hero h2{animation-delay:.7s}.hero .tag{animation-delay:.85s}.hero p{animation-delay:1s}.hero .btns{animation-delay:1.15s}
+.hero img{filter:drop-shadow(0 20px 50px rgba(124,58,237,.55));opacity:0;animation:pop 1s var(--ease) .5s forwards,float 6s ease-in-out 1.5s infinite}
+@keyframes pop{from{opacity:0;transform:scale(.8) rotate(-8deg)}to{opacity:1;transform:none}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+.hero .btn.primary{background:#fff;color:var(--deep);border-color:#fff}
+.hero .btn.primary:hover{background:#d8b4fe;border-color:#d8b4fe}
+.hero .btn.ghost{color:#fff;border-color:#b794f4}
+.hero .btn.ghost:hover{background:rgba(255,255,255,.12)}
+
+/* buttons */
+.btn{transition:transform .25s var(--ease),background .25s,box-shadow .25s,color .25s}
+.btn:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(79,42,150,.28)}
+.btn:active{transform:translateY(0)}
+
+/* ticker */
+.ticker{background:var(--deep);color:#fff;overflow:hidden;padding:14px 0;border-top:1px solid rgba(255,255,255,.15)}
+.ticker-track{display:flex;gap:14px;width:max-content;animation:tick 32s linear infinite}
+.ticker:hover .ticker-track{animation-play-state:paused}
+.ticker span{padding:6px 18px;border:1px solid rgba(255,255,255,.35);border-radius:999px;font-size:.9rem;white-space:nowrap}
+@keyframes tick{to{transform:translateX(-50%)}}
+
+/* scroll reveal (only when JS is running) */
+.js .reveal{opacity:0;transform:translateY(34px);transition:opacity .8s var(--ease),transform .8s var(--ease);transition-delay:var(--d,0s)}
+.js .reveal.in{opacity:1;transform:none}
+.js .reveal-left{opacity:0;transform:translateX(-34px);transition:opacity .8s var(--ease),transform .8s var(--ease);transition-delay:var(--d,0s)}
+.js .reveal-left.in{opacity:1;transform:none}
+
+/* timeline that draws itself */
+.steps{border-left:0;position:relative}
+.steps::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--line)}
+.steps::after{content:"";position:absolute;left:0;top:0;width:3px;height:var(--fill,0%);background:linear-gradient(var(--accent),var(--deep));transition:height .2s linear}
+.steps li::before{transition:transform .5s var(--ease),background .4s;z-index:1}
+.js .steps li:not(.in)::before{transform:scale(0)}
+.steps li.in::before{transform:scale(1)}
+.steps li{transition:transform .3s var(--ease)}
+.steps li:hover{transform:translateX(6px)}
+
+/* hover cards */
+.types div,.expect>div{transition:transform .3s var(--ease),background .3s,box-shadow .3s,border-color .3s;border-radius:10px}
+.types div{padding:16px 14px}
+.types div:hover{background:#fff;transform:translateY(-4px);box-shadow:0 12px 28px rgba(79,42,150,.14)}
+.expect>div{padding:20px 22px;background:#fff;border:1px solid var(--line)}
+.expect>div:hover{transform:translateY(-5px);box-shadow:0 14px 30px rgba(79,42,150,.16);border-color:var(--accent)}
+.cols ul li{transition:transform .25s var(--ease)}
+.cols ul li:hover{transform:translateX(6px)}
+.cols ul{list-style:none;padding:0}
+.cols ul li{position:relative;padding-left:26px}
+.cols ul li::before{content:"";position:absolute;left:0;top:.62em;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+
+/* wave dividers */
+.wave{display:block;width:100%;height:60px;margin:-1px 0}
+.wave path{transition:none}
+
+/* faq */
+summary{transition:color .2s}
+summary:hover{color:var(--accent)}
+summary::after{transition:transform .3s var(--ease)}
+details[open] summary::after{transform:rotate(180deg)}
+details[open] p{animation:rise .45s var(--ease)}
+
+/* contact section glow */
+.join{position:relative;overflow:hidden}
+.join::before{content:"";position:absolute;width:420px;height:420px;border-radius:50%;background:#7c3aed;filter:blur(90px);opacity:.45;top:-140px;right:-100px;animation:blob1 13s ease-in-out infinite alternate}
+.join .wrap{position:relative}
+
+/* back to top */
+#top{position:fixed;right:20px;bottom:20px;width:46px;height:46px;border-radius:50%;border:0;background:var(--deep);color:#fff;font-size:1.2rem;cursor:pointer;opacity:0;transform:translateY(20px);pointer-events:none;transition:opacity .3s,transform .3s var(--ease),background .2s;z-index:20}
+#top.show{opacity:1;transform:none;pointer-events:auto}
+#top:hover{background:var(--accent)}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .js .reveal,.js .reveal-left,.hero h1 span,.hero h2,.hero .tag,.hero p,.hero .btns,.hero img{opacity:1!important;transform:none!important}
+  .js .steps li:not(.in)::before{transform:none}
+}
 </style>
 </head>
 <body>
+<div id="bar"></div>
 
 <div class="banner" role="img" aria-label="Oncology Interest Group banner"></div>
 
@@ -132,7 +245,7 @@ footer p{margin:0;max-width:60ch}
 <header class="hero">
   <div class="wrap">
     <div>
-      <h1>CURE</h1>
+      <h1 aria-label="CURE"><span aria-hidden="true">C</span><span aria-hidden="true">U</span><span aria-hidden="true">R</span><span aria-hidden="true">E</span></h1>
       <h2>Cancer Undergraduate Research Experience</h2>
       <p class="tag">Your first real step into oncology research.</p>
       <p>CURE connects Alfaisal medical students with real oncology research projects led by doctors at Riyadh’s cancer centers. Doctors share what they need, OIG matches them with vetted students, and every project is followed through to the finish.</p>
@@ -145,12 +258,20 @@ footer p{margin:0;max-width:60ch}
   </div>
 </header>
 
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track">
+    <span>Cohort studies</span><span>Retrospective cohorts</span><span>Systematic reviews</span><span>SRMAs</span><span>RCTs</span><span>Oncology</span><span>Hematology</span><span>Posters</span><span>Abstracts</span><span>Papers</span>
+    <span>Cohort studies</span><span>Retrospective cohorts</span><span>Systematic reviews</span><span>SRMAs</span><span>RCTs</span><span>Oncology</span><span>Hematology</span><span>Posters</span><span>Abstracts</span><span>Papers</span>
+  </div>
+</div>
+
+
 <main>
 <section id="how" class="tint">
   <div class="wrap">
-    <h2 class="title">How CURE works</h2>
-    <p class="lead">From a doctor’s idea to a finished outcome, in five steps.</p>
-    <ol class="steps">
+    <h2 class="title reveal">How CURE works</h2>
+    <p class="lead reveal" style="--d:.1s">From a doctor’s idea to a finished outcome, in five steps.</p>
+    <ol class="steps" id="steps">
       <li><h3>Doctors share a project</h3><p>A doctor fills in one short form with the project details and how many students are needed.</p></li>
       <li><h3>Students apply</h3><p>An application, then an interview. The selected applicants join our vetted pool.</p></li>
       <li><h3>OIG makes the match</h3><p>Each project is paired with the best-fit student, based on interest, availability and skills.</p></li>
@@ -162,9 +283,9 @@ footer p{margin:0;max-width:60ch}
 
 <section id="students">
   <div class="wrap">
-    <h2 class="title">For students</h2>
-    <p class="lead">Hands-on research in oncology and hematology, with a spot matched to your interests.</p>
-    <div class="cols">
+    <h2 class="title reveal">For students</h2>
+    <p class="lead reveal" style="--d:.1s">Hands-on research in oncology and hematology, with a spot matched to your interests.</p>
+    <div class="cols reveal">
       <div>
         <h3>What you get</h3>
         <ul>
@@ -185,8 +306,8 @@ footer p{margin:0;max-width:60ch}
 
 <section id="projects" class="tint">
   <div class="wrap">
-    <h2 class="title">What you could work on</h2>
-    <dl class="types">
+    <h2 class="title reveal">What you could work on</h2>
+    <dl class="types reveal">
       <div><dt>Cohort studies</dt><dd>Following patients over time to compare outcomes.</dd></div>
       <div><dt>Retrospective cohorts</dt><dd>Looking back at existing records to compare outcomes.</dd></div>
       <div><dt>Systematic reviews</dt><dd>Searching, screening and summarizing the evidence.</dd></div>
@@ -194,15 +315,15 @@ footer p{margin:0;max-width:60ch}
       <div><dt>RCTs</dt><dd>Randomized controlled trials comparing treatments.</dd></div>
       <div><dt>And more</dt><dd>Other project types, depending on what each doctor needs.</dd></div>
     </dl>
-    <p class="note">These are starting ideas. Each doctor decides what is possible for their own project.</p>
+    <p class="note reveal">These are starting ideas. Each doctor decides what is possible for their own project.</p>
   </div>
 </section>
 
 <section id="doctors">
   <div class="wrap">
-    <h2 class="title">For doctors</h2>
-    <p class="lead">Get reliable help on your research without extra admin.</p>
-    <div class="cols">
+    <h2 class="title reveal">For doctors</h2>
+    <p class="lead reveal" style="--d:.1s">Get reliable help on your research without extra admin.</p>
+    <div class="cols reveal">
       <div>
         <h3>What you get</h3>
         <ul>
@@ -224,9 +345,9 @@ footer p{margin:0;max-width:60ch}
 
 <section id="expect" class="tint">
   <div class="wrap">
-    <h2 class="title">What to expect</h2>
-    <p class="lead">Clear expectations from the start, so every project runs smoothly for students and doctors.</p>
-    <div class="expect">
+    <h2 class="title reveal">What to expect</h2>
+    <p class="lead reveal" style="--d:.1s">Clear expectations from the start, so every project runs smoothly for students and doctors.</p>
+    <div class="expect reveal">
       <div><h3>Time is agreed upfront</h3><p>Weekly hours and the project timeline are agreed before you begin, so you know exactly what you are signing up for.</p></div>
       <div><h3>Training and ethics</h3><p>Research ethics, plus any training the hospital or its ethics committee requires before you start.</p></div>
       <div><h3>Confidentiality and professionalism</h3><p>Patient confidentiality and professional conduct matter at every step of every project.</p></div>
@@ -237,8 +358,8 @@ footer p{margin:0;max-width:60ch}
 
 <section id="faq">
   <div class="wrap">
-    <h2 class="title">Quick answers</h2>
-    <div class="faq">
+    <h2 class="title reveal">Quick answers</h2>
+    <div class="faq reveal">
       <details><summary>Who can join?</summary><p>CURE is for Alfaisal medical students. Details on eligibility will be shared when applications open.</p></details>
       <details><summary>How much time will it take?</summary><p>It depends on the project. Weekly hours are agreed upfront between you, your doctor and OIG.</p></details>
       <details><summary>How do doctors take part?</summary><p>Doctors fill in one short form. OIG finds a vetted student and handles the follow-up.</p></details>
@@ -249,8 +370,8 @@ footer p{margin:0;max-width:60ch}
 
 <section id="contact" class="join">
   <div class="wrap">
-    <h2 class="title">Get involved</h2>
-    <div class="cols">
+    <h2 class="title reveal">Get involved</h2>
+    <div class="cols reveal">
       <div><h3>Students</h3><p>Follow @Oncoig_au to hear first when applications open.</p></div>
       <div><h3>Doctors</h3><p>Contact the team at <a href="mailto:Oncologyig@alfaisal.edu">Oncologyig@alfaisal.edu</a> to share a project.</p></div>
     </div>
@@ -266,5 +387,32 @@ footer p{margin:0;max-width:60ch}
   </div>
 </footer>
 
+
+<button id="top" aria-label="Back to top">&uarr;</button>
+<script>
+(function(){
+  document.documentElement.classList.add('js');
+  var bar=document.getElementById('bar'),nav=document.querySelector('nav'),top=document.getElementById('top'),steps=document.getElementById('steps');
+  var links=[].slice.call(document.querySelectorAll('nav a'));
+  var secs=links.map(function(a){return document.querySelector(a.getAttribute('href'))});
+  function onScroll(){
+    var h=document.documentElement,y=window.scrollY,max=h.scrollHeight-window.innerHeight;
+    bar.style.width=(max>0?y/max*100:0)+'%';
+    nav.classList.toggle('scrolled',y>150);
+    top.classList.toggle('show',y>600);
+    var cur=-1;secs.forEach(function(s,i){if(s&&s.getBoundingClientRect().top<window.innerHeight*0.4)cur=i});
+    links.forEach(function(a,i){a.classList.toggle('active',i===cur)});
+    if(steps){var r=steps.getBoundingClientRect();var p=(window.innerHeight*0.6-r.top)/r.height;steps.style.setProperty('--fill',Math.max(0,Math.min(1,p))*100+'%')}
+  }
+  window.addEventListener('scroll',onScroll,{passive:true});onScroll();
+  top.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'})});
+  // staggered children
+  [].forEach.call(document.querySelectorAll('.types>div,.expect>div,.cols>div'),function(el,i){el.classList.add('reveal');el.style.setProperty('--d',((i%4)*0.1)+'s')});
+  var stepLis=[].slice.call(document.querySelectorAll('.steps li'));
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){var t=e.target;t.classList.add('in');io.unobserve(t);setTimeout(function(){t.classList.remove('reveal','reveal-left');if(!t.matches('.steps li'))t.classList.remove('in');t.style.removeProperty('--d')},1400)}})},{threshold:.15,rootMargin:'0px 0px -6% 0px'});
+  [].forEach.call(document.querySelectorAll('.reveal,.reveal-left'),function(el){io.observe(el)});
+  stepLis.forEach(function(li,i){li.classList.add('reveal-left');li.style.setProperty('--d',(i*0.08)+'s');io.observe(li)});
+})();
+</script>
 </body>
 </html>
